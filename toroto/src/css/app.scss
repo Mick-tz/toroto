@@ -1,0 +1,28 @@
+// app global css in SCSS form
+@import 'bg-nature.scss';
+
+body {
+    font-family: 'Oswald', 'Roboto';
+    margin: 0;
+}
+
+
+.restringido {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+.restringido-lg {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.large-screen-only {
+    @media (max-width: $breakpoint-xs-max) {
+        display: none;
+    }
+    @media (min-width: $breakpoint-sm-min) {
+        display: block;
+    }
+}
+.clickable {
+    cursor: pointer;
+}
