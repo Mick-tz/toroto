@@ -49,7 +49,7 @@
                 </q-card-section>
               </q-card-section>
               <q-card-section class="text-center q-pa-none">
-                <q-btn unelevated rounded color="primary" label="Ver detalles" />
+                <q-btn unelevated rounded color="primary" label="Ver detalles" :to="`/proyecto/${index}`" />
               </q-card-section>
               </q-card>
             </div>
@@ -139,7 +139,7 @@
                   </q-card-section>
                 </q-card-section>
                 <q-card-section class="text-center q-pa-none">
-                  <q-btn unelevated rounded color="primary" label="Ver detalles" />
+                  <q-btn unelevated rounded color="primary" label="Ver detalles" :to="`/proyecto/${index}`"/>
                 </q-card-section>
               </q-card>
             </div>
@@ -184,10 +184,5 @@ export default {
 .imagen-tarjeta {
   width: 100%;
   height: 180px;
-}
-.q-btn__content {
-  i {
-    color: green!important;
-  }
 }
 </style>
