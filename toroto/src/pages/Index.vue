@@ -2,7 +2,7 @@
   <q-page class="pagina-principal">
     <section class="landing">
       <div class="row text-yellow-3 text-center">
-        <div class="col-12 large-screen-only q-mt-xl">
+        <div class="col-12 q-mt-xl">
           <h2 class="q-mb-none">Become a <span class="text-weight-bold">Hero</span></h2>
           <h2 class="q-my-sm">by getting to <span class="text-weight-bold">ZERO</span></h2>
           <p class="text-h4 text-white q-my-lg">Empresas evolucionando hacia un mundo sin CO2</p>

@@ -17,7 +17,7 @@
       <q-tabs align="right" class="restringido-lg">
         <q-route-tab to="/" label="Inicio" />
         <q-route-tab to="/proyectos" label="Proyectos" />
-        <q-route-tab to="/acerca" label="Acerca" />
+        <q-route-tab to="/clientes" label="Clientes" />
       </q-tabs>
     </q-header>
 

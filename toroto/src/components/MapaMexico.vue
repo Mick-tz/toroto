@@ -151,7 +151,6 @@ export default {
   },
   methods: {
     iniciarFiltroProyectosPorEstado() {
-        console.log(this.estado);
         const estadosMapa = document.querySelectorAll('.mapa-mexico a')
         estadosMapa.forEach(estado => {
             estado.addEventListener('click', event => {

@@ -31,7 +31,7 @@
                             left: '10px',
                         }"
                     >
-                        <img v-for="numero in 3" :key="numero" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" style="width: 100px; height: 100px" class="q-ma-md animacion-fade">
+                        <img v-for="numero in 3" :key="numero" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" style="width: 80px; height: 80px" class="q-ma-md animacion-fade">
                     </div>
                 </template>
                 </q-parallax>
@@ -40,22 +40,25 @@
       </section>
       <section class="seccion-descripccion">
           <div class="row">
-              <div class="col-12">
-                  <div class="row restringido-lg q-my-lg">
-                      <div class="col-sm-8 col-12 q-my-xl">
+              <div class="col-12 q-mt-xl">
+                  <div class="row restringido-lg q-mt-xl">
+                      <!-- columnas de la descripccion  -->
+                      <div class="col-sm-8 col-12" :class="{'q-pb-xl': $q.screen.gt.xs}">
                         <article>
                             <p class="descripcion text-center text-grey-8 text-h6 q-px-lg">
                             {{this.proyecto.description}}
                             </p>
                         </article>
                       </div>
-                      <div class="col-12 col-sm-4 q-mt-xl">
+                      <!-- tarjeta de compra de bonos  -->
+                      <div class="col-12 col-sm-4" :class="{'q-pa-lg bg-grey-2': $q.screen.lt.sm}">
                         <q-card
                             :class="{'fixed-top-right sticky-card': bonosCardSticky, '': !bonosCardSticky}"
                             v-show="toggleBonosCard"
                             ref="refCard"
                             :flat="!bonosCardSticky"
                         >
+                            <!-- header tarjeta compra de bonos  -->
                             <q-card-section>
                                 <div class="row">
                                     <div class="col">
@@ -67,6 +70,7 @@
                                 </div>
                                 <div class="text-h4 text-uppercase text-yellow-8">But Leave no tracks!</div>
                             </q-card-section>
+                            <!-- input de compra de bonos  -->
                             <q-card-section>
                                 <q-input
                                 bottom-slots
@@ -85,14 +89,15 @@
                                     </template>
                                 </q-input>
                             </q-card-section>
-
+                            <!-- seccion precio individual bono  -->
                             <q-card-section class="q-pt-sm q-ml-md text-subtitle1 text-grey-9">
                                 {{proyecto.offsetPrice | formatoPrecio}} por tonelada de carbono removida.
                             </q-card-section>
-
+                            <!-- seccion display precio total  -->
                             <q-card-section class="text-h5 q-pt-none">
                                 Total: {{this.precioTotalBonos | formatoPrecio}} USD
                             </q-card-section>
+                            <!-- boton comprar bonos  -->
                             <q-card-section class="text-center q-pt-md">
                                 <q-btn unelevated rounded color="yellow-8" text-color="dark" label="Comprar bonos" padding="md xl" icon-right="eco" />
                             </q-card-section>
@@ -103,14 +108,16 @@
           </div>
       </section>
       <section class="seccion-ventajas">
-          <mapa-mexico v-bind:estado="getSlugEstado()"></mapa-mexico>
-        <div class="row full-height	">
+        <mapa-mexico v-bind:estado="getSlugEstado()"></mapa-mexico>
+        <!-- detalles adicionales proyecto  -->
+        <div class="row">
             <div class="col-12">
                 <div class="row restringido-lg">
-                    <div class="col-6 col-sm-6 q-my-lg q-pa-lg full-height">
+                    <div class="col-6 q-my-lg q-pa-lg full-height">
                     </div>
-                    <div class="col-sm-6 col-6 larger-screen-only">
-                        <div class="col-12 q-pa-lg q-my-lg">
+                    <div class="col-6">
+                        <div class="col-12" :class="{'q-pa-lg q-my-lg': $q.screen.gt.xs}">
+                            <!-- tarjeta datos generales  -->
                         <q-card flat class="bg-transparent">
                             <q-card-section class="text-center q-pa-none q-ma-none">
                                 <h5 class="q-my-md text-white">{{this.proyecto.location}}</h5>
@@ -119,7 +126,7 @@
                                 <div class="col-sm-6 col-12">
                                 </div>
                                 <div class="col-sm-6 col-12 q-pa-md">
-                                    <q-list dark bordered separator>
+                                    <q-list dark bordered separator v-if="$q.screen.gt.sm">
                                     <q-item clickable v-ripple>
                                         <q-item-section>
                                             <q-item-label overline>Tipo:</q-item-label>
@@ -144,40 +151,41 @@
                                 </div>
                             </div>
                         </q-card>
-
                         </div>
                     </div>
                 </div>
                 <div class="row restringido">
                     <div class="col-6 q-mt-md">
                         <div class="row">
-                            <div class="col-6">
-                                <q-list dark>
-                                <q-item>
-                                    <q-item-section>
-                                    <q-item-label class="text-font-bold text-body1">{{this.proyecto.jobsGenerated}} nuevos trabajado generados</q-item-label>
-                                    </q-item-section>
-
-                                    <q-item-section side top>
-                                    <q-icon size="lg" name="engineering" />
-                                    </q-item-section>
-                                </q-item>
-
-                                <q-separator spaced inset color="white"/>
-                                <div class="" v-for="beneficio in this.proyecto.coBenefits" :key="beneficio">
+                            <div class="col-6" :class="{'text-center full-height q-mt-xl q-pt-lg': $q.screen.lt.md}">
+                                <!-- lista beneficios adicionales  -->
+                                <q-list dark v-if="$q.screen.gt.sm">
                                     <q-item>
                                         <q-item-section>
-                                        <q-item-label class="text-font-bold text-body1">{{beneficio}}</q-item-label>
+                                        <q-item-label class="text-font-bold text-body1">{{this.proyecto.jobsGenerated}} nuevos trabajado generados</q-item-label>
                                         </q-item-section>
 
                                         <q-item-section side top>
-                                        <q-icon name="park" size="lg"/>
+                                        <q-icon size="lg" name="engineering" />
                                         </q-item-section>
                                     </q-item>
 
                                     <q-separator spaced inset color="white"/>
-                                </div>
+                                    <div class="" v-for="beneficio in this.proyecto.coBenefits" :key="beneficio">
+                                        <q-item>
+                                            <q-item-section>
+                                            <q-item-label class="text-font-bold text-body1">{{beneficio}}</q-item-label>
+                                            </q-item-section>
+
+                                            <q-item-section side top>
+                                            <q-icon name="park" size="lg"/>
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-separator spaced inset color="white"/>
+                                    </div>
                                 </q-list>
+                                <q-btn v-else unelevated round color="dark" icon="my_location" />
                             </div>
                             <div class="col"></div>
                         </div>
@@ -224,7 +232,6 @@ export default {
             let location = this.proyecto.location
             let estado = location.split(",")[0].toLowerCase()
             estado = estado.replace(/\W+/g, '-')
-            console.log(estado)
             return estado
         },
         morph (state) {
@@ -265,6 +272,9 @@ export default {
     .animacion-apertura {
         animation: apertura 3s ease-in;
         animation-fill-mode: forwards;
+        @media (max-width: $breakpoint-xs-max) {
+            animation-duration: 1s!important;
+        }
         // transform-origin: right;
         // transform-box: fill-box;
         // box-sizing: border-box;
