@@ -75,7 +75,7 @@
                 <q-card-section class="q-pa-xs q-pb-none">
                   <q-item>
                     <q-item-section>
-                      <q-item-label class="text-h5">Dejar nuestra marca, borrando nuestras huellas</q-item-label>
+                      <q-item-label class="text-h5">Dejar nuestra marca, borrando nuestras huellas. Es hora de encarar desafío</q-item-label>
                     </q-item-section>
                   </q-item>
                   <q-item>
@@ -149,7 +149,46 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 q-my-xl">
+
+        <div class="col-12 q-my-lg">
+          <div class="row restringido-lg q-col-gutter-md">
+            <div v-for="(proyecto, index) in this.$store.getters['proyectos/getProyectos'].slice(1, 3)" class="col-md-4 col-sm-6 col-12 q-pa-sm" :key="index">
+              <q-card class="tarjeta-proyecto" flat>
+                <q-img :src="proyecto.img" class="imagen-tarjeta"/>
+
+                <q-card-section>
+                  <div class="text-h6">{{proyecto.name}}</div>
+                </q-card-section>
+                <q-item-section>
+                  <q-item-label class="q-ma-xs text-justify text-grey-8 clickable text-body1" :lines="5">
+                    {{proyecto.description}}
+                  </q-item-label>
+                </q-item-section>
+                <q-card-section horizontal>
+                  <q-card-section class="q-mt-xs">
+                    <p class="text-subtitle1 font-weight-bold">Bonos disponibles: </p>
+                  </q-card-section>
+                  <q-card-section>
+                        <q-btn
+                          padding="sm"
+                          class="boton-bonos"
+                          color="yellow-8"
+                          text-color="dark"
+                          :label="proyecto.availableOffsets"
+                        >
+                          <q-icon class="q-ml-xs text-green-10" name="eco" />
+                          <q-tooltip>
+                            Comprar bonos
+                          </q-tooltip>
+                        </q-btn>
+                  </q-card-section>
+                </q-card-section>
+                <q-card-section class="text-center q-pa-none">
+                  <q-btn unelevated rounded color="primary" label="Ver detalles" :to="`/proyecto/${index}`"/>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
         </div>
       </div>
     </section>

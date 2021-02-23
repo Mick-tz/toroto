@@ -137,12 +137,58 @@
                 </g>
             </svg>
         </div>
+        <!-- tarjetas detalles  -->
+        <q-dialog v-model="tarjetaBusquedaFiltrada">
+            <q-card >
+                <q-list class="q-pa-lg">
+                    <template v-if="proyectosFiltro.length" class="text-grey-8">
+                        <div v-for="(proyecto, index) in proyectosFiltro" :key="index">
+                            <q-item>
+                                <q-item-section>
+                                <q-item-label class="text-body1 q-mx-md">{{proyecto.name}}</q-item-label>
+                                </q-item-section>
+                                <q-separator inset vertical></q-separator>
+
+                                <q-item-section side>
+                                    <q-item-label class="text-body1">{{proyecto.availableOffsets}} bonos disponibles</q-item-label>
+                                    
+                                </q-item-section>
+                            </q-item>
+
+                        </div>
+                        <div v-for="(proyecto, index) in proyectosFiltro" :key="index">
+                            <q-item>
+                                <q-item-section>
+                                <q-item-label class="text-body1 q-mx-md">Lorem Ipsum</q-item-label>
+                                </q-item-section>
+                                <q-separator inset vertical></q-separator>
+                                <q-item-section side>
+                                    <q-item-label class="text-body1">{{proyecto.availableOffsets + 500}} bonos disponibles</q-item-label>
+                                </q-item-section>
+                            </q-item>
+
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="text-center text-h5 q-pa-lg text-grey-8">
+                            Lo sentimos, por el momento no hemos encontrado proyectos en este estado.
+                        </div>
+                    </template>
+                </q-list>
+            </q-card>
+        </q-dialog>
     </div>
 </template>
 
 <script>
 export default {
   name: 'MapaMexico',
+  data() {
+    return {
+        tarjetaBusquedaFiltrada: false,
+        proyectosFiltro: []      
+    }
+  },
   props: {
     estado: {
       type: String,
@@ -156,8 +202,13 @@ export default {
             estado.addEventListener('click', event => {
                 let nombreEstado = estado.classList[1].replace(/\-/, ' ')
                 console.log(this.$store.getters['proyectos/getProyectosPorEstado'](nombreEstado))
+                this.mostrarBusqueda(this.$store.getters['proyectos/getProyectosPorEstado'](nombreEstado))
             })
         })
+    },
+    mostrarBusqueda(proyectos) {
+        this.tarjetaBusquedaFiltrada= true
+        this.proyectosFiltro = proyectos
     }
   },
   mounted() {

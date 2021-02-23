@@ -26,12 +26,12 @@
                     <div
                         class="absolute row items-left"
                         :style="{
-                            opacity: 0.45 + (1 - scope.percentScrolled) * 0.55,
+                            opacity: 0.65 + (1 - scope.percentScrolled) * 0.55,
                             top: (scope.percentScrolled * 10) + '%',
                             left: '10px',
                         }"
                     >
-                        <img v-for="numero in 3" :key="numero" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" style="width: 80px; height: 80px" class="q-ma-md animacion-fade">
+                        <img v-for="stakeholder in proyecto.mainStakeHolders" :key="stakeholder.logo" :src="stakeholder.logo" style="width: 80px; height: 80px; object-position: center; object-fit: cover;" class="q-ma-md animacion-fade">
                     </div>
                 </template>
                 </q-parallax>
@@ -242,7 +242,7 @@
       </section>
       <section class="contadores">
           <div class="row">
-              <div class="col-12">
+              <div class="col-12 q-my-md">
                   <div class="row justify-evenly q-col-gutter-xl q-pa-md">
                       <div class="col-sm-4 col-12 q-mt-xl">
                           <q-card flat class="q-pa-lg">
@@ -253,7 +253,10 @@
                                 El equivalente al CO2 generado por {{parseInt(proyecto.totalOffsets / 16)}} personas durante un año.</div>
                             </q-card-section>
                             <q-card-section class="q-px-md q-pt-none">
-                                <q-icon class="q-mx-xs" v-for="i in getPersonas()" :key="'person-' + i" name="fab fas fa-smog" :color="colorSmog(i)"/>
+                                <q-icon class="q-mx-xs" v-for="i in getPersonas()" :key="'smog-' + i" name="fab fas fa-smog" :color="colorSmog(i)"/>
+                            </q-card-section>
+                            <q-card-section class="q-pt-sm text-center">
+                                <div class="text-grey-8 text-h6 cursor-pointer">Reducir mi huella</div>
                             </q-card-section>
                           </q-card>
                       </div>
@@ -267,7 +270,17 @@
                             <q-card-section class="q-px-md q-pt-none">
                                 <q-icon v-for="i in getPersonas()" :key="'person-' + i" name="fab fas fa-child" color="primary"/>
                             </q-card-section>
+                            <q-card-section class="q-pt-sm text-center">
+                                <div class="text-grey-8 text-h6 cursor-pointer">Reducir mi huella</div>
+                            </q-card-section>
                           </q-card>
+                          <div class="row">
+                              <div class="col-12 text-center q-mt-md">
+                                  <div class="text-h4">Este proyecto ha sido certificado por <span class="text-primary">{{proyecto.verifier}}</span></div>
+                                  <div class="text-subtitle1 q-mt-md text-grey-8">Visita nuestros enlaces para conocer más</div>
+                                  <q-btn label="Leer mas" color="primary" rounded padding="sm lg" class="q-mt-md"></q-btn>
+                              </div>
+                          </div>
                       </div>
                       <div class="col-sm-4 col-12 q-mt-xl">
                           <q-card flat class="q-pa-lg">
@@ -281,8 +294,20 @@
                             <q-card-section class="q-px-md q-pt-none">
                                 <q-icon v-for="i in getHectareas()" :key="'tree-' + i" name="park" color="green-8"/>
                             </q-card-section>
+                            <q-card-section class="q-pt-sm text-center">
+                                <div class="text-grey-8 text-h6 cursor-pointer">Reducir mi huella</div>
+                            </q-card-section>
                           </q-card>
                       </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="stakeholders">
+          <div class="row q-pt-xl">
+              <div class="col-12 q-pt-md">
+                  <div class="row">
+                      
                   </div>
               </div>
           </div>
