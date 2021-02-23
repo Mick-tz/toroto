@@ -42,12 +42,61 @@
           <div class="row">
               <div class="col-12">
                   <div class="row restringido-lg q-my-lg">
-                      <div class="col-12 q-my-xl">
+                      <div class="col-sm-8 col-12 q-my-xl">
                         <article>
                             <p class="descripcion text-center text-grey-8 text-h6 q-px-lg">
                             {{this.proyecto.description}}
                             </p>
                         </article>
+                      </div>
+                      <div class="col-12 col-sm-4 q-mt-xl">
+                        <q-card
+                            :class="{'fixed-top-right sticky-card': bonosCardSticky, '': !bonosCardSticky}"
+                            v-show="toggleBonosCard"
+                            ref="refCard"
+                            :flat="!bonosCardSticky"
+                        >
+                            <q-card-section>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-h4 text-uppercase">Get on track,</div>
+                                        </div>
+                                        <div v-if="bonosCardSticky" class="col-auto">
+                                            <q-btn flat icon="minimize" size="lg" color="grey-8" class="q-mr-2" @click="toggleBonosCard = false" />
+                                        </div>
+                                </div>
+                                <div class="text-h4 text-uppercase text-yellow-8">But Leave no tracks!</div>
+                            </q-card-section>
+                            <q-card-section>
+                                <q-input
+                                bottom-slots
+                                v-model.number="bonosPorComprar"
+                                color="grey-3"
+                                label-color="yellow-8"
+                                class="text-h5"
+                                outlined
+                                >
+                                    <template v-slot:hint>
+                                        <p class="text-red"> Ultimos {{proyecto.availableOffsets}} bonos disponibles.</p>
+                                    </template>
+                                    <template v-slot:append>
+                                        <p class="text-subtitle text-grey-6 q-pt-md">toneladas de carbono</p>
+                                        <q-icon name="eco" color="yellow-8"/>
+                                    </template>
+                                </q-input>
+                            </q-card-section>
+
+                            <q-card-section class="q-pt-sm q-ml-md text-subtitle1 text-grey-9">
+                                {{proyecto.offsetPrice | formatoPrecio}} por tonelada de carbono removida.
+                            </q-card-section>
+
+                            <q-card-section class="text-h5 q-pt-none">
+                                Total: {{this.precioTotalBonos | formatoPrecio}} USD
+                            </q-card-section>
+                            <q-card-section class="text-center q-pt-md">
+                                <q-btn unelevated rounded color="yellow-8" text-color="dark" label="Comprar bonos" padding="md xl" icon-right="eco" />
+                            </q-card-section>
+                        </q-card>
                       </div>
                   </div>
               </div>
@@ -212,21 +261,21 @@
                                     <q-item clickable v-ripple>
                                         <q-item-section>
                                             <q-item-label overline>Tipo:</q-item-label>
-                                            <q-item-label class="q-ml-sm">{{this.proyecto.type}}</q-item-label>
+                                            <q-item-label class="q-ml-md text-body1 font-weight-bold">{{this.proyecto.type}}</q-item-label>
                                         </q-item-section>
                                     </q-item>
 
                                     <q-item clickable v-ripple>
                                         <q-item-section>
                                         <q-item-label overline>Desarrollado por:</q-item-label>
-                                        <q-item-label class="q-ml-sm">{{this.proyecto.developer}}</q-item-label>
+                                        <q-item-label class="q-ml-md text-body1 font-weight-bold">{{this.proyecto.developer}}</q-item-label>
                                         </q-item-section>
                                     </q-item>
 
                                     <q-item clickable v-ripple>
                                         <q-item-section>
                                         <q-item-label overline>Area protegida:</q-item-label>
-                                        <q-item-label class="q-ml-sm">{{this.proyecto.area}}</q-item-label>
+                                        <q-item-label class="q-ml-md text-body1 font-weight-bold">{{this.proyecto.area}}</q-item-label>
                                         </q-item-section>
                                     </q-item>
                                     </q-list>
@@ -244,34 +293,29 @@
                                 <q-list dark>
                                 <q-item>
                                     <q-item-section>
-                                    <q-item-label>{{this.proyecto.jobsGenerated}} nuevos trabajado generados</q-item-label>
+                                    <q-item-label class="text-font-bold text-body1">{{this.proyecto.jobsGenerated}} nuevos trabajado generados</q-item-label>
                                     </q-item-section>
 
                                     <q-item-section side top>
-                                    <q-icon name="engineering" />
+                                    <q-icon size="lg" name="engineering" />
                                     </q-item-section>
                                 </q-item>
 
                                 <q-separator spaced inset color="white"/>
-                                <div class="" v-for="(beneficio, index) in this.proyecto.coBenefits" :key="beneficio">
+                                <div class="" v-for="beneficio in this.proyecto.coBenefits" :key="beneficio">
                                     <q-item>
                                         <q-item-section>
-                                        <q-item-label>{{beneficio}}</q-item-label>
+                                        <q-item-label class="text-font-bold text-body1">{{beneficio}}</q-item-label>
                                         </q-item-section>
 
                                         <q-item-section side top>
-                                        <q-icon name="eco" />
+                                        <q-icon name="park" size="lg"/>
                                         </q-item-section>
                                     </q-item>
 
                                     <q-separator spaced inset color="white"/>
                                 </div>
                                 </q-list>
-                                <!-- <q-card flat bordered class="q-pa-none">
-                                    <q-card-section>
-                                        <h5><q-icon name="engineering" size="md" class="q-mr-md"/>{{this.proyecto.jobsGenerated}} trabajos generados</h5>
-                                    </q-card-section>
-                                </q-card> -->
                             </div>
                             <div class="col"></div>
                         </div>
@@ -282,15 +326,77 @@
             </div>
         </div>
       </section>
+      <section>
+          <div class="extra" v-intersection="onIntersection"></div>
+      </section>
+    <div class="fixed-bottom-right q-ma-xl">
+        <div ref="refFab" class="bg-yellow-8"/>
+            <q-btn
+                v-if="!toggleBonosCard"
+                @click="morph(true)"
+                color="yellow-8"
+                icon="eco"
+                text-color="green-8"
+            />
+    </div>
   </q-page>
 </template>
 
 <script>
+import { morph } from 'quasar'
+import { format } from 'quasar'
 export default {
     name: 'Proyecto',
     data() {
         return {
-            proyecto: this.$store.getters['proyectos/getProyectos'][this.$route.params.id]
+            toggleBonosCard: true,
+            bonosCardSticky: false,
+            proyecto: this.$store.getters['proyectos/getProyectos'][this.$route.params.id],
+            bonosPorComprar: 1000
+        }
+    },
+    methods: {
+        morph (state) {
+            if (state !== this.toggleBonosCard) {
+                const getFab = () => this.$refs.refFab
+                const getCard = () => this.$refs.refCard ? this.$refs.refCard.$el : void 0
+
+                morph({
+                    from: this.toggleBonosCard === true ? getCard : getFab,
+                    to: this.toggleBonosCard === true ? getFab : getCard,
+                    onToggle: () => {
+                        this.toggleBonosCard = state
+                    },
+                    duration: 500
+                })
+            }
+        },
+        onIntersection (entry) {
+            this.bonosCardSticky = entry.isIntersecting
+            this.toggleBonosCard = !entry.isIntersecting
+        },
+        iniciarFiltroProyectosPorEstado() {
+            const estadosMapa = document.querySelectorAll('.mapa-mexico a')
+            const that = this
+            estadosMapa.forEach(estado => {
+                estado.addEventListener('click', event => {
+                    console.log(estado, event)
+                    console.log(estado.classList[1])
+                    let nombreEstado = estado.classList[1].replace(/\-/, ' ')
+                    console.log(this.$store.getters['proyectos/getProyectosPorEstado'](nombreEstado))
+                })
+            })
+        }
+    },
+    filters: {
+        formatoPrecio(precio) {
+            return `$ ${precio}`
+        }
+    },
+    computed: {
+        precioTotalBonos() {
+            let precio = parseFloat(this.proyecto.offsetPrice.split(' ')[0])
+            return this.bonosPorComprar * precio
         }
     },
     mounted() {
@@ -298,11 +404,8 @@ export default {
         let estado = location.split(",")[0].toLowerCase()
         estado = estado.replace(/\W+/g, '-')
         let anchorEstado = document.querySelector(`.${estado}`)
-        console.log(estado)
-        console.log(anchorEstado)
-        anchorEstado.classList.remove('estado')
         anchorEstado.classList.add('seleccion')
-        console.log(anchorEstado.firstElementChild.classList)
+        this.iniciarFiltroProyectosPorEstado()
     }
 }
 </script>
@@ -315,6 +418,7 @@ export default {
         }
         path:hover {
             fill: rgb(180, 180, 180);
+            cursor: pointer;
         }
     }
     .seleccion {
@@ -322,24 +426,28 @@ export default {
             fill: $indigo!important;
         }
         path:hover {
-            fill: $indigo!important;
+            fill: $indigo-2!important;
+            cursor: pointer;
         }
     }
     .animacion-apertura {
-        animation: apertura 2s ease-in-out;
-        transform-origin: right;
-        transform-box: fill-box;
-        box-sizing: border-box;
+        animation: apertura 3s ease-in;
+        animation-fill-mode: forwards;
+        // transform-origin: right;
+        // transform-box: fill-box;
+        // box-sizing: border-box;
     }
     .animacion-fade {
         animation: fade-in 5s ease-in-out;
     }
     @keyframes apertura {
         from {
-            transform: translateX(100%);
+            transform: translateX(40%);
+            width: 20%;
         }
         to {
             transform: translateX(0%);
+            width: 100%;
         }
     }
     @keyframes fade-in {
@@ -357,7 +465,7 @@ export default {
         position: relative;
         width: 100%;
         height: auto;
-        z-index: -2;
+        // z-index: -2;
         background-color: $primary;
     }
     .mapa-mexico {
@@ -367,7 +475,7 @@ export default {
         left: 0;
         width: 100vw;
         height: auto;
-        z-index: -2;
+        // z-index: -2;
         background: $primary linear-gradient(rgb(0,0,0,0.5), rgb(0,0,0,0.5));
         @media (max-width: $breakpoint-xs-max) {
             padding: 30px 40px;
@@ -384,5 +492,13 @@ export default {
         @media (min-width: $breakpoint-xl-min) {
             padding: 100px 500px;
         }
+    }
+    .sticky-card {
+        right: 150px;
+        top: 160px;
+        z-index: 2;
+    }
+    .extra {
+        min-height: 100vh;
     }
 </style>
