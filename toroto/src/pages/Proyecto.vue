@@ -53,10 +53,11 @@
                       <!-- tarjeta de compra de bonos  -->
                       <div class="col-12 col-sm-4" :class="{'q-pa-lg bg-grey-2': $q.screen.lt.sm}">
                         <q-card
-                            :class="{'fixed-top-right sticky-card': bonosCardSticky, '': !bonosCardSticky}"
-                            v-show="toggleBonosCard"
+                            class="q-mx-sm"
+                            :class="{'fixed-top-right sticky-card': bonosCardAsSticky, '': !bonosCardAsSticky}"
+                            v-if="toggleBonosCard"
                             ref="refCard"
-                            :flat="!bonosCardSticky"
+                            :flat="!bonosCardAsSticky"
                         >
                             <!-- header tarjeta compra de bonos  -->
                             <q-card-section>
@@ -64,8 +65,8 @@
                                     <div class="col">
                                         <div class="text-h4 text-uppercase">Get on track,</div>
                                         </div>
-                                        <div v-if="bonosCardSticky" class="col-auto">
-                                            <q-btn flat icon="minimize" size="lg" color="grey-8" class="q-mr-2" @click="toggleBonosCard = false" />
+                                        <div v-if="bonosCardAsSticky" class="col-auto">
+                                            <q-btn flat icon="minimize" size="lg" color="grey-8" class="q-mr-2" @click="morphTarjetaBonos(false)" />
                                         </div>
                                 </div>
                                 <div class="text-h4 text-uppercase text-yellow-8">But Leave no tracks!</div>
@@ -73,6 +74,7 @@
                             <!-- input de compra de bonos  -->
                             <q-card-section>
                                 <q-input
+                                @input="comprobarBonos"
                                 bottom-slots
                                 v-model.number="bonosPorComprar"
                                 color="grey-3"
@@ -84,17 +86,17 @@
                                         <p class="text-red"> Ultimos {{proyecto.availableOffsets}} bonos disponibles.</p>
                                     </template>
                                     <template v-slot:append>
-                                        <p class="text-subtitle text-grey-6 q-pt-md">toneladas de carbono</p>
+                                        <p :class="{'text-subtitle': $q.screen.gt.xs, 'text-body2': $q.screen.lt.sm}" class="text-grey-6 q-pt-md">toneladas de carbono</p>
                                         <q-icon name="eco" color="yellow-8"/>
                                     </template>
                                 </q-input>
                             </q-card-section>
                             <!-- seccion precio individual bono  -->
-                            <q-card-section class="q-pt-sm q-ml-md text-subtitle1 text-grey-9">
+                            <q-card-section class="q-pt-sm q-ml-sm text-subtitle1 text-grey-8">
                                 {{proyecto.offsetPrice | formatoPrecio}} por tonelada de carbono removida.
                             </q-card-section>
                             <!-- seccion display precio total  -->
-                            <q-card-section class="text-h5 q-pt-none">
+                            <q-card-section class="text-h5 q-pt-none q-ml-sm">
                                 Total: {{this.precioTotalBonos | formatoPrecio}} USD
                             </q-card-section>
                             <!-- boton comprar bonos  -->
@@ -200,10 +202,10 @@
           <div class="extra" v-intersection="onIntersection"></div>
       </section>
     <div class="fixed-bottom-right q-ma-xl">
-        <div ref="refFab" class="bg-yellow-8"/>
+        <div ref="refFab" class="bg-yellow-8 fixed-bottom-right q-ma-xl" style="border-radius:50%; height:1px; width:1px;"/>
             <q-btn
                 v-if="!toggleBonosCard"
-                @click="morph(true)"
+                @click="morphTarjetaBonos(true)"
                 color="yellow-8"
                 icon="eco"
                 text-color="green-8"
@@ -222,7 +224,7 @@ export default {
     data() {
         return {
             toggleBonosCard: true,
-            bonosCardSticky: false,
+            bonosCardAsSticky: false,
             proyecto: this.$store.getters['proyectos/getProyectos'][this.$route.params.id],
             bonosPorComprar: 1000
         }
@@ -234,7 +236,7 @@ export default {
             estado = estado.replace(/\W+/g, '-')
             return estado
         },
-        morph (state) {
+        morphTarjetaBonos (state) {
             if (state !== this.toggleBonosCard) {
                 const getFab = () => this.$refs.refFab
                 const getCard = () => this.$refs.refCard ? this.$refs.refCard.$el : void 0
@@ -250,9 +252,15 @@ export default {
             }
         },
         onIntersection (entry) {
-            this.bonosCardSticky = entry.isIntersecting
-            this.toggleBonosCard = !entry.isIntersecting
+            console.log(entry)
+            this.bonosCardAsSticky = entry.isIntersecting
+            this.morphTarjetaBonos(!entry.isIntersecting)
         },
+        comprobarBonos(bonos) {
+            if (this.proyecto.availableOffsets < this.bonosPorComprar) {
+                this.bonosPorComprar = this.proyecto.availableOffsets   
+            }
+        }
     },
     filters: {
         formatoPrecio(precio) {
@@ -304,9 +312,11 @@ export default {
         height: calc(100vh - 122px);
     }
     .sticky-card {
-        right: 150px;
-        top: 160px;
         z-index: 2;
+        top: 160px;
+        @media (min-width: $breakpoint-sm-min) {
+            right: 150px;
+        }
     }
     .extra {
         min-height: 100vh;

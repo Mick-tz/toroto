@@ -2,11 +2,11 @@
   <q-page class="pagina-principal">
     <section class="landing">
       <div class="row text-yellow-3 text-center">
-        <div class="col-12 q-mt-xl">
+        <div class="col-12" :class="{'q-mt-xl': $q.screen.gt.xs, 'q-mt-sm': $q.screen.lt.sm}">
           <h2 class="q-mb-none">Become a <span class="text-weight-bold">Hero</span></h2>
           <h2 class="q-my-sm">by getting to <span class="text-weight-bold">ZERO</span></h2>
           <p class="text-h4 text-white q-my-lg">Empresas evolucionando hacia un mundo sin CO2</p>
-          <q-btn class="q-mt-xl" unelevated rounded color="yellow-8" text-color="dark" label="APRENDE COMO" padding="md xl" />
+          <q-btn :class="{'q-mt-xl': $q.screen.gt.xs, 'q-mt-sm': $q.screen.lt.sm}" unelevated rounded color="yellow-8" text-color="dark" label="APRENDE COMO" padding="md xl" />
         </div>
       </div>
     </section>

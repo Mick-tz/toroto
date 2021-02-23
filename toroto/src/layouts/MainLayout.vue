@@ -18,6 +18,7 @@
         <q-route-tab to="/" label="Inicio" />
         <q-route-tab to="/proyectos" label="Proyectos" />
         <q-route-tab to="/clientes" label="Clientes" />
+        <q-route-tab to="/acerca" label="Acerca" />
       </q-tabs>
     </q-header>
 
@@ -35,14 +36,15 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer> -->
-
+    <mobile-footer></mobile-footer>
   </q-layout>
 </template>
 
 <script>
-
+import MobileFooter from '../components/MobileFooter'
 export default {
   name: 'MainLayout',
+  components: { MobileFooter },
   data () {
     return {}
   }
