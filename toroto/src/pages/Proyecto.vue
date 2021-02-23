@@ -51,7 +51,7 @@
                         </article>
                       </div>
                       <!-- tarjeta de compra de bonos  -->
-                      <div class="col-12 col-sm-4" :class="{'q-pa-lg bg-grey-2': $q.screen.lt.sm}">
+                      <div class="col-12 col-sm-4" :class="{'q-pa-lg bg-grey-2': $q.screen.lt.sm}" style="min-height: 480px">
                         <q-card
                             class="q-mx-sm"
                             :class="{'fixed-top-right sticky-card': bonosCardAsSticky, '': !bonosCardAsSticky}"
@@ -69,7 +69,7 @@
                                             <q-btn flat icon="minimize" size="lg" color="grey-8" class="q-mr-2" @click="morphTarjetaBonos(false)" />
                                         </div>
                                 </div>
-                                <div class="text-h4 text-uppercase text-yellow-8">But Leave no tracks!</div>
+                                <div class="text-h4 text-uppercase text-yellow-8">But Leave no marks!</div>
                             </q-card-section>
                             <!-- input de compra de bonos  -->
                             <q-card-section>
@@ -187,7 +187,49 @@
                                         <q-separator spaced inset color="white"/>
                                     </div>
                                 </q-list>
-                                <q-btn v-else unelevated round color="dark" icon="my_location" />
+                                <q-fab
+                                    v-else
+                                    v-model="detailsFab"
+                                    external-label
+                                    color="primary"
+                                    icon="leaderboard"
+                                    direction="right"
+                                >
+                                    <q-fab-action class="q-mx-xs" external-label label-position="top" color="primary" @click="onClick" icon="engineering" label="Detalles" />
+                                    <q-fab-action class="q-mx-xs" external-label label-position="top" color="primary" @click="onClick" icon="park" label="Beneficios" />
+                                    <q-fab-action class="q-mx-xs" v-if="proyecto.flora.length" external-label label-position="top" color="primary" @click="onClick" icon="fab fas fa-frog" label="Fauna" />
+                                </q-fab>
+                                <!-- tarjetas detalles  -->
+                                <q-dialog v-model="tarjetaDetalles">
+                                    <q-card >
+                                        <q-list>
+                                            <q-item>
+                                                <q-item-section>
+                                                <q-item-label class="text-font-bold text-body1">{{this.proyecto.jobsGenerated}} nuevos trabajado generados</q-item-label>
+                                                </q-item-section>
+
+                                                <q-item-section side top>
+                                                <q-icon size="lg" name="engineering" />
+                                                </q-item-section>
+                                            </q-item>
+
+                                            <q-separator spaced inset color="white"/>
+                                            <div class="" v-for="beneficio in this.proyecto.coBenefits" :key="beneficio">
+                                                <q-item>
+                                                    <q-item-section>
+                                                    <q-item-label class="text-font-bold text-body1">{{beneficio}}</q-item-label>
+                                                    </q-item-section>
+
+                                                    <q-item-section side top>
+                                                    <q-icon name="park" size="lg"/>
+                                                    </q-item-section>
+                                                </q-item>
+
+                                                <q-separator spaced inset color="white"/>
+                                            </div>
+                                        </q-list>
+                                    </q-card>
+                                </q-dialog>
                             </div>
                             <div class="col"></div>
                         </div>
@@ -198,12 +240,57 @@
             </div>
         </div>
       </section>
-      <section>
-          <div class="extra" v-intersection="onIntersection"></div>
+      <section class="contadores">
+          <div class="row">
+              <div class="col-12">
+                  <div class="row justify-evenly q-col-gutter-xl q-pa-md">
+                      <div class="col-sm-4 col-12 q-mt-xl">
+                          <q-card flat class="q-pa-lg">
+                            <img src="~assets/img/hands_green.jpg">
+                            <q-card-section>
+                                <div class="text-h5 text-left">{{proyecto.totalOffsets}} toneladas de CO2 removidas de la atmósfera.</div>
+                                <div class="text-justity text-subtitle1 text-grey-8 q-pt-xs">
+                                El equivalente al CO2 generado por {{parseInt(proyecto.totalOffsets / 16)}} personas durante un año.</div>
+                            </q-card-section>
+                            <q-card-section class="q-px-md q-pt-none">
+                                <q-icon class="q-mx-xs" v-for="i in getPersonas()" :key="'person-' + i" name="fab fas fa-smog" :color="colorSmog(i)"/>
+                            </q-card-section>
+                          </q-card>
+                      </div>
+                      <div class="col-sm-4 col-12">
+                          <q-card v-intersection="onIntersection" flat class="q-pa-lg">
+                            <img src="~assets/img/smile.jpg">
+                            <q-card-section>
+                                <div class="text-h5 text-left">{{proyecto.jobsGenerated}} empleos encauzados hacia el desarrollo sustentable.
+                                </div>
+                            </q-card-section>
+                            <q-card-section class="q-px-md q-pt-none">
+                                <q-icon v-for="i in getPersonas()" :key="'person-' + i" name="fab fas fa-child" color="primary"/>
+                            </q-card-section>
+                          </q-card>
+                      </div>
+                      <div class="col-sm-4 col-12 q-mt-xl">
+                          <q-card flat class="q-pa-lg">
+                            <img src="~assets/img/proteger.jpg">
+                            <q-card-section>
+                                <!-- TODO: Agregar filtro para que cambie este mensaje dependiendo del tipo de proyecto.  -->
+                                <div class="text-h5 text-left">
+                                    {{proyecto.area.split(' ')[0]}} hectáreas de zona boscosa protegida.
+                                </div>
+                            </q-card-section>
+                            <q-card-section class="q-px-md q-pt-none">
+                                <q-icon v-for="i in getHectareas()" :key="'tree-' + i" name="park" color="green-8"/>
+                            </q-card-section>
+                          </q-card>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </section>
     <div class="fixed-bottom-right q-ma-xl">
         <div ref="refFab" class="bg-yellow-8 fixed-bottom-right q-ma-xl" style="border-radius:50%; height:1px; width:1px;"/>
             <q-btn
+                class="q-mb-md"
                 v-if="!toggleBonosCard"
                 @click="morphTarjetaBonos(true)"
                 color="yellow-8"
@@ -223,6 +310,8 @@ export default {
     components: { MapaMexico }, 
     data() {
         return {
+            tarjetaDetalles: false,
+            detailsFab: true,
             toggleBonosCard: true,
             bonosCardAsSticky: false,
             proyecto: this.$store.getters['proyectos/getProyectos'][this.$route.params.id],
@@ -252,13 +341,40 @@ export default {
             }
         },
         onIntersection (entry) {
-            console.log(entry)
             this.bonosCardAsSticky = entry.isIntersecting
             this.morphTarjetaBonos(!entry.isIntersecting)
         },
         comprobarBonos(bonos) {
             if (this.proyecto.availableOffsets < this.bonosPorComprar) {
                 this.bonosPorComprar = this.proyecto.availableOffsets   
+            }
+        },
+        onClick() {
+            this.tarjetaDetalles = true
+        },
+        getPersonas() {
+            return Math.min(parseInt(this.proyecto.totalOffsets / 16*1500), 100)
+        },
+        getHectareas() {
+            return Math.min(parseInt(parseInt(this.proyecto.area.split(' ')[0]) / 2), 100)
+        },
+        colorSmog(index) {
+            if (index < 15) {
+                return 'grey-8'
+            } else if (index < 30) {
+                return 'grey-7'
+            } else if (index < 45) {
+                return 'grey-6'
+            } else if (index <= 60) {
+                return 'grey-5'
+            } else if (index < 75) {
+                return 'grey-4'
+            } else if (index < 90) {
+                return 'grey-3'
+            } else if (index <= 100) {
+                return 'grey-2'
+            } else {
+                return 'black'
             }
         }
     },
@@ -307,9 +423,6 @@ export default {
         to {
             opacity: 100%;
         }
-    }
-    .seccion-ventajas {
-        height: calc(100vh - 122px);
     }
     .sticky-card {
         z-index: 2;

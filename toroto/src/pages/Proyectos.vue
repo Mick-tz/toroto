@@ -75,7 +75,7 @@
                 <q-card-section class="q-pa-xs q-pb-none">
                   <q-item>
                     <q-item-section>
-                      <q-item-label class="text-h5">Este es el titulo de un hermoso post acerca de como podemos salvar la naturaleza</q-item-label>
+                      <q-item-label class="text-h5">Dejar nuestra marca, borrando nuestras huellas</q-item-label>
                     </q-item-section>
                   </q-item>
                   <q-item>
@@ -97,7 +97,9 @@
                     <div class="text-subtitle1">Mensaje de nuestro CTO</div>
                   </q-card-section>
                 </q-card-section>
-
+                <q-card-section class="text-center">
+                  <q-btn color="primary" rounded unelevated label="Leer mas..."></q-btn>
+                </q-card-section>
               </q-card>
             </div>
           </div>
